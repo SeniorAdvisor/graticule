@@ -47,7 +47,7 @@ module Graticule
 
       # Extracts a location from +xml+.
       def parse_response(result) #:nodoc:
-        return result
+        #return result
         addr = result["results"].first["locations"].first
         Location.new(
           :latitude    => addr["latLng"]["lat"],

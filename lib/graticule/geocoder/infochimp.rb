@@ -34,7 +34,7 @@ module Graticule
       def parse_response(result) #:nodoc:
                                  #return result
         addr = result["results"].first
-        Location.new(
+        location = Location.new(
             :longitude   => addr["coordinates"][0],
             :latitude    => addr["coordinates"][1],
             :street      => "#{addr["street_number"]} #{addr["street_name"]}".strip,
@@ -42,6 +42,12 @@ module Graticule
             :region      => addr["state_id"],
             :country     => addr["country_id"]
         )
+        if location.longitude
+          nominatim_service = Graticule::Geocoder::Nominatim.new
+          nominatim_result = nominatim_service.locate(location.latitude,location.longitude)
+          location.postal_code = nominatim_result.postal_code
+        end
+        location
       end
 
       # Extracts and raises any errors in +xml+

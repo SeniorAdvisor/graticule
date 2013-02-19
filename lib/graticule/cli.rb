@@ -29,7 +29,7 @@ module Graticule
         opts.separator ""
         opts.separator "Options: "
 
-        opts.on("-s service", %w(yahoo google yandex geocoder_us metacarta mapquest infochimp), "--service service", "Geocoding service") do |service|
+        opts.on("-s service", %w(yahoo google yandex geocoder_us metacarta mapquest infochimp nominatim), "--service service", "Geocoding service") do |service|
           options[:service] = service
         end
 

@@ -39,7 +39,7 @@ module Graticule
         # radius = Graticule::Distance::EARTH_RADIUS[options[:units].to_sym]
         # if distance < 0
         #   return nil
-        # end 
+        # end
         # radLat = location.latitude.to_radians
         # radLon = location.longitude.to_radians
         # radDist = distance / radius
@@ -83,9 +83,9 @@ module Graticule
           end_lng=lng+Math.atan2(Math.sin(heading)*Math.sin(distance/radius)*Math.cos(lat),
                                Math.cos(distance/radius)-Math.sin(lat)*Math.sin(end_lat))
 
-          return [end_lat.to_degrees, end_lng.to_degrees]
+          return [end_lat.to_degrees.round(6), end_lng.to_degrees.round(6)]
       end
-        
+
       def self.to_sql(options)
         options = {
           :units => :miles,
@@ -97,14 +97,14 @@ module Graticule
         radius = Graticule::Distance::EARTH_RADIUS[options[:units].to_sym]
         distance_ratio = options[:distance] / radius
         %{
-          (#{options[:latitude_column]} >= #{box[:minLat]} AND #{options[:latitude_column]} <= #{box[:maxLat]}) 
+          (#{options[:latitude_column]} >= #{box[:minLat]} AND #{options[:latitude_column]} <= #{box[:maxLat]})
             AND (#{options[:longitude_column]} >= #{box[:minLon]} AND #{options[:longitude_column]} <= #{box[:maxLon]})
             AND ACOS(SIN(RADIANS(#{options[:latitude]})) *
             SIN(RADIANS(#{options[:latitude_column]})) +
             COS(RADIANS(#{options[:latitude]})) *
             COS(RADIANS(#{options[:latitude_column]})) *
             COS(RADIANS(#{options[:longitude_column]}) - RADIANS(#{options[:longitude]}))) <= #{distance_ratio}
-            
+
         }.gsub("\n", '').squeeze(" ")
       end
     end

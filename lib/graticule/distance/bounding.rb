@@ -99,11 +99,11 @@ module Graticule
         %{
           (#{options[:latitude_column]} >= #{box[:minLat]} AND #{options[:latitude_column]} <= #{box[:maxLat]})
             AND (#{options[:longitude_column]} >= #{box[:minLon]} AND #{options[:longitude_column]} <= #{box[:maxLon]})
-            AND ACOS(SIN(RADIANS(#{options[:latitude]})) *
+            AND ACOS(LEAST(1,SIN(RADIANS(#{options[:latitude]})) *
             SIN(RADIANS(#{options[:latitude_column]})) +
             COS(RADIANS(#{options[:latitude]})) *
             COS(RADIANS(#{options[:latitude_column]})) *
-            COS(RADIANS(#{options[:longitude_column]}) - RADIANS(#{options[:longitude]}))) <= #{distance_ratio}
+            COS(RADIANS(#{options[:longitude_column]}) - RADIANS(#{options[:longitude]})))) <= #{distance_ratio}
 
         }.gsub("\n", '').squeeze(" ")
       end
